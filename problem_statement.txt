@@ -1,0 +1,346 @@
+🚀 Merchant Growth Autopilot — Product Definition
+1. Real-world problem
+
+ఒక online merchant daggara thousands of customers, orders, payments, checkout events untayi.
+
+But merchant ki continuously:
+
+Revenue ekkada leak avutundi?
+Which customer segment is underperforming?
+Which products have growth potential?
+Checkout lo users ekkada drop avutunnaru?
+Which intervention can actually increase revenue?
+
+ane questions ki answer manually find cheyyali.
+
+Mana system ee analysis + decision process ni automate chestundi.
+
+2. Our exact solution
+Merchant Growth Autopilot
+
+An AI agent that continuously analyzes merchant commerce signals, discovers revenue-growth opportunities, investigates their causes, proposes controlled experiments, and evaluates the outcomes under predefined safety and business rules.
+
+Simple ga:
+
+DATA
+ ↓
+DETECT
+ ↓
+INVESTIGATE
+ ↓
+REASON
+ ↓
+PROPOSE
+ ↓
+APPROVE
+ ↓
+EXPERIMENT
+ ↓
+MEASURE
+ ↓
+LEARN
+3. 👤 Who uses it?
+Primary user
+
+Online merchant / business owner
+
+Example:
+
+Fashion merchant
+Electronics merchant
+D2C brand
+Online retailer
+Secondary user
+
+Merchant operations/growth team
+
+They can inspect:
+
+AI findings
+experiments
+decisions
+results
+audit history
+4. 🎯 What exactly does AI find?
+
+We shouldn't allow AI to invent random opportunities.
+
+We'll define a set of growth opportunity categories.
+
+Opportunity 1 — Checkout Drop
+High traffic
++
+Low checkout completion
+
+AI investigates why.
+
+Opportunity 2 — High View, Low Purchase
+Product views ↑
+Cart additions ↓
+Purchases ↓
+
+Possible hypothesis:
+
+Product is attracting interest but failing to convert.
+
+Opportunity 3 — Cart Abandonment
+Cart additions ↑
+Purchases ↓
+
+AI investigates:
+
+customer segment
+device
+price
+time
+payment method
+Opportunity 4 — Customer Retention
+First purchase ↑
+Repeat purchase ↓
+
+AI identifies customer cohorts with low repeat conversion.
+
+Opportunity 5 — Payment Conversion
+Checkout initiated ↑
+Successful payment ↓
+
+AI investigates payment-method/device/time patterns.
+
+5. 🧠 AI Agent's actual job
+
+This is extremely important.
+
+AI is not the analytics engine.
+
+Analytics engine
+
+Calculates facts:
+
+Conversion rate = 3.1%
+Cart abandonment = 67%
+Mobile conversion = 2.2%
+Desktop conversion = 4.8%
+AI Agent
+
+Uses those facts to reason:
+
+"Mobile conversion is 54% lower than desktop. The difference is statistically meaningful across the observed period. The strongest opportunity appears to be mobile checkout optimization."
+
+So:
+
+Analytics = WHAT
+AI Agent = WHY + WHAT NEXT
+
+🔥 This separation makes our architecture much stronger.
+
+6. 🛠️ Agent tools
+
+AI doesn't directly access PostgreSQL.
+
+It uses controlled tools.
+
+For MVP:
+
+getMerchantOverview()
+
+getRevenueMetrics()
+
+getConversionMetrics()
+
+getCheckoutFunnel()
+
+getCustomerSegments()
+
+getProductPerformance()
+
+getPaymentPerformance()
+
+compareSegments()
+
+createGrowthHypothesis()
+
+estimateExperimentImpact()
+
+createExperiment()
+
+getExperimentResult()
+
+Example:
+
+AI
+ ↓
+getCheckoutFunnel()
+ ↓
+sees mobile conversion = 2.2%
+ ↓
+compareSegments("device")
+ ↓
+sees desktop = 4.8%
+ ↓
+investigates further
+ ↓
+creates hypothesis
+
+This demonstrates tool-using agentic behavior.
+
+7. 🧪 Experiment system
+
+AI cannot simply say:
+
+"Give everyone 20% discount."
+
+Instead:
+
+Experiment object
+Experiment ID
+Hypothesis
+Target segment
+Control group
+Treatment group
+Action
+Budget
+Duration
+Expected impact
+Status
+Result
+AI recommendation
+
+Example:
+
+Experiment: EXP-001
+
+Hypothesis:
+Mobile users have lower checkout conversion.
+
+Target:
+Mobile users
+
+Control:
+Existing checkout
+
+Treatment:
+Simplified checkout
+
+Expected improvement:
+10–20%
+
+Budget:
+₹5,000
+
+Status:
+Awaiting approval
+8. 🔐 Guardrails
+
+This is one of our major differentiators.
+
+AI suggestions pass through a policy layer.
+
+AI Proposal
+     ↓
+Policy Engine
+     ↓
+┌───────────────┐
+│ Is it allowed?│
+└───────┬───────┘
+        │
+   ┌────┴────┐
+   ↓         ↓
+Allowed    Blocked
+   ↓         ↓
+Approval    Reason
+
+Rules could include:
+
+Maximum experiment budget
+Maximum discount
+Maximum affected users
+Allowed experiment types
+Required merchant approval
+9. 👨‍💼 Human-in-the-loop
+
+For our prototype:
+
+AI can:
+
+✅ Analyze
+✅ Investigate
+✅ Recommend
+✅ Create experiment proposal
+✅ Calculate expected impact
+✅ Evaluate completed experiment
+
+AI cannot independently:
+
+❌ Spend unlimited money
+❌ Change merchant settings
+❌ Execute unrestricted payment actions
+❌ Modify financial records
+
+Instead:
+
+AI recommendation
+       ↓
+Merchant approval
+       ↓
+Sandbox execution
+
+This is especially important because we're building for a payments/fintech context.
+
+10. 📊 Dashboard
+
+React dashboard will have roughly:
+
+Dashboard
+Revenue
+Conversion
+Orders
+Growth opportunities
+Active experiments
+AI Opportunities
+Opportunity
+Why detected
+Evidence
+Expected impact
+Confidence
+Recommended action
+Experiment Center
+Active
+Pending approval
+Completed
+Failed
+Experiment Details
+Control vs Treatment
+Conversion
+Revenue
+Lift
+Statistical result
+AI conclusion
+Audit
+AI action
+Timestamp
+Tool used
+Decision
+Approval
+Result
+11. 🏗️ MVP — What we MUST finish
+
+To avoid scope explosion, our MVP is locked to this:
+
+Core
+ Synthetic realistic data generator
+ PostgreSQL database
+ Spring Boot backend
+ Merchant analytics
+ Growth opportunity detection
+ AI agent
+ Tool calling
+ Guardrail/policy engine
+ Human approval
+ Experiment creation
+ Experiment execution in sandbox
+ Result analysis
+ React dashboard
+ Docker
+ Git/GitHub
+ Tests
+ Documentation
