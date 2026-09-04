@@ -1,3 +1,11 @@
+A merchant may have thousands of transactions/events, but the merchant doesn't have time to continuously answer:
+
+“Where am I losing money, why is it happening, and what should I do about it?”
+
+
+
+
+
 🚀 Merchant Growth Autopilot — Product Definition
 1. Real-world problem
 

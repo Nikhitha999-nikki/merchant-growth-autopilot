@@ -1,0 +1,627 @@
+<div class="dashboard">
+
+  <!-- Header -->
+  <header class="dashboard-header">
+    <div>
+      <h1>Merchant Growth Autopilot</h1>
+      <p>AI-powered merchant growth operations</p>
+    </div>
+
+    <div class="agent-status">
+      <span class="status-dot"></span>
+      Agent Online
+    </div>
+  </header>
+
+
+  <!-- KPI Cards -->
+  <div class="kpi-grid">
+
+    <div class="kpi-card">
+      <span class="kpi-label">Total Orders</span>
+      <strong>{{ totalOrders }}</strong>
+      <small>Processed orders</small>
+    </div>
+
+    <div class="kpi-card">
+      <span class="kpi-label">Growth Opportunities</span>
+      <strong>{{ opportunities.length }}</strong>
+      <small>Detected by AI</small>
+    </div>
+
+    <div class="kpi-card">
+      <span class="kpi-label">AI Recommendations</span>
+      <strong>{{ recommendations.length }}</strong>
+      <small>Recommended actions</small>
+    </div>
+
+  </div>
+
+  <section class="agent-panel">
+
+    <div>
+      <span class="agent-label">AI AUTOPILOT</span>
+      <h2>Let the growth agent analyze your business</h2>
+      <p>
+        The agent detects the highest-priority opportunity,
+        validates the recommended action, and executes it only
+        when approval and guardrails allow it.
+      </p>
+    </div>
+
+    <button
+      class="agent-run-btn"
+      [disabled]="agentRunning"
+      (click)="runAgent()">
+
+      {{ agentRunning ? 'Agent Running...' : 'Run Growth Agent' }}
+
+    </button>
+
+  </section>
+
+
+  <!-- Growth Opportunities -->
+  <section class="section-card">
+
+    <div class="section-header">
+
+      <div>
+        <h2>Growth Opportunities</h2>
+        <p>Business problems detected from merchant activity</p>
+      </div>
+
+      <span class="count-badge">
+        {{ opportunities.length }} detected
+      </span>
+
+    </div>
+
+
+    <!-- Loading -->
+    <div *ngIf="loading" class="loading">
+      Analyzing merchant data...
+    </div>
+
+
+    <!-- Opportunity Cards -->
+    <div
+      *ngFor="let opportunity of opportunities"
+      class="opportunity-card"
+    >
+
+      <div
+        class="severity"
+        [class.high]="opportunity.severity === 'HIGH'"
+        [class.medium]="opportunity.severity === 'MEDIUM'"
+      >
+        {{ opportunity.severity }}
+      </div>
+
+
+      <div class="opportunity-content">
+
+        <h3>{{ opportunity.title }}</h3>
+
+        <p>{{ opportunity.description }}</p>
+
+
+        <div class="metrics">
+
+          <div>
+            <span>Segment</span>
+            <strong>{{ opportunity.segment }}</strong>
+          </div>
+
+          <div>
+            <span>Current Rate</span>
+            <strong>{{ opportunity.currentRate }}%</strong>
+          </div>
+
+          <div>
+            <span>Baseline</span>
+            <strong>{{ opportunity.baselineRate }}%</strong>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- AI Recommendations -->
+  <section class="section-card">
+
+    <div class="section-header">
+
+      <div>
+        <h2>AI Recommendations</h2>
+        <p>Recommended actions for detected opportunities</p>
+      </div>
+
+    </div>
+
+
+    <!-- Recommendation Cards -->
+    <div
+      *ngFor="let recommendation of recommendations"
+      class="recommendation-card"
+    >
+
+      <div class="ai-icon">
+        AI
+      </div>
+
+
+      <div class="recommendation-content">
+
+        <h3>{{ recommendation.title }}</h3>
+
+        <p>{{ recommendation.description }}</p>
+
+
+        <!-- Recommendation Metadata -->
+        <div class="recommendation-meta">
+
+          <span class="priority">
+            {{ recommendation.priority }}
+          </span>
+
+          <span class="recommendation-status">
+            Status:
+            <strong>{{ recommendation.status }}</strong>
+          </span>
+
+        </div>
+
+
+        <!-- Recommendation Actions -->
+        <div class="recommendation-actions">
+
+
+          <!-- Approve / Reject -->
+          <ng-container
+            *ngIf="recommendation.status === 'GENERATED'"
+          >
+
+            <button
+              class="approve-btn"
+              (click)="approveRecommendation(recommendation.id)"
+            >
+              Approve
+            </button>
+
+            <button
+              class="reject-btn"
+              (click)="rejectRecommendation(recommendation.id)"
+            >
+              Reject
+            </button>
+
+          </ng-container>
+
+
+          <!-- Execute Action -->
+          <button
+            *ngIf="recommendation.status === 'APPROVED'"
+            class="execute-btn"
+            (click)="checkAndExecute(recommendation)"
+          >
+            Run Autopilot Action
+          </button>
+
+          <button
+            *ngIf="executedRecommendationIds.includes(recommendation.id)"
+            class="btn btn-outline-primary"
+            (click)="measureImpact(recommendation)">
+            Measure Impact
+          </button>
+
+          <!-- Measure Impact -->
+          <button
+            *ngIf="recommendation.status === 'APPROVED'"
+            class="impact-btn"
+            (click)="measureImpact(recommendation)"
+          >
+            Measure Impact
+          </button>
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- Autopilot Activity -->
+  <section
+    class="section-card"
+    *ngIf="activity.length > 0"
+  >
+
+    <div class="section-header">
+
+      <div>
+        <h2>Autopilot Activity</h2>
+        <p>Controlled actions performed by the growth agent</p>
+      </div>
+
+    </div>
+
+
+    <div
+      class="activity-item"
+      *ngFor="let item of activity"
+    >
+
+      <div class="activity-icon">
+        ✓
+      </div>
+
+
+      <div class="activity-content">
+
+        <strong>
+          {{ item.message }}
+        </strong>
+
+        <p>
+          {{ item.detail }}
+        </p>
+
+      </div>
+
+
+      <span class="activity-status">
+        {{ item.status }}
+      </span>
+
+    </div>
+
+  </section>
+
+
+  <!-- Impact Measurement -->
+  <section
+    class="impact-card"
+    *ngIf="impactResult"
+  >
+
+    <div class="section-header">
+
+      <div>
+        <h2>Action Impact</h2>
+
+        <p>
+          Estimated business impact from the executed action
+        </p>
+      </div>
+
+      <span class="impact-badge">
+        IMPACT MEASURED
+      </span>
+
+    </div>
+
+
+    <!-- Impact Metrics -->
+    <div class="impact-grid">
+
+
+      <div class="impact-item">
+
+        <span>
+          Before Conversion
+        </span>
+
+        <strong>
+          {{ impactResult.beforeRate | number:'1.2-2' }}%
+        </strong>
+
+      </div>
+
+
+      <div class="impact-item">
+
+        <span>
+          After Conversion
+        </span>
+
+        <strong>
+          {{ impactResult.afterRate | number:'1.2-2' }}%
+        </strong>
+
+      </div>
+
+
+      <div class="impact-item">
+
+        <span>
+          Improvement
+        </span>
+
+        <strong class="positive">
+
+          +{{ impactResult.improvement | number:'1.2-2' }}
+
+          <small>pts</small>
+
+        </strong>
+
+      </div>
+
+
+      <div class="impact-item">
+
+        <span>
+          Estimated Revenue
+        </span>
+
+        <strong>
+          ₹{{ impactResult.estimatedRevenue | number:'1.2-2' }}
+        </strong>
+
+      </div>
+
+
+    </div>
+
+
+    <!-- Impact Explanation -->
+    <div class="impact-success">
+
+      <span class="success-icon">✓</span>
+
+      <div>
+
+        <strong>
+          Impact measured successfully
+        </strong>
+
+        <p>
+          The optimization is estimated to improve mobile payment
+          conversion and recover additional revenue.
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <section class="impact-section" *ngIf="impactResult">
+
+    <div class="section-header">
+      <div>
+        <h2>Estimated Business Impact</h2>
+        <p>Measured result from the autopilot action</p>
+      </div>
+
+      <span class="impact-badge">
+      IMPACT MEASURED
+    </span>
+    </div>
+
+    <div class="impact-grid">
+
+      <div class="impact-card">
+        <span>Before Conversion</span>
+        <strong>{{ impactResult.beforeRate | number:'1.2-2' }}%</strong>
+      </div>
+
+      <div class="impact-card">
+        <span>After Conversion</span>
+        <strong>{{ impactResult.afterRate | number:'1.2-2' }}%</strong>
+      </div>
+
+      <div class="impact-card">
+        <span>Improvement</span>
+        <strong>
+          +{{ impactResult.improvement | number:'1.2-2' }} pts
+        </strong>
+      </div>
+
+      <div class="impact-card revenue">
+        <span>Estimated Revenue Impact</span>
+        <strong>
+          ₹{{ impactResult.estimatedRevenue | number:'1.0-0' }}
+        </strong>
+      </div>
+
+    </div>
+
+    <div class="impact-note">
+      Estimated impact based on the current sandbox optimization model.
+    </div>
+
+  </section>
+
+
+  <!-- Agent Decision Trace -->
+  <section
+    class="agent-trace-section"
+    *ngIf="agentResult">
+
+    <div class="section-header">
+
+      <div>
+        <h2>Agent Decision Trace</h2>
+
+        <p>
+          How the Growth Agent analyzed the merchant and reached its decision
+        </p>
+      </div>
+
+      <span class="agent-status">
+      {{ agentResult.status }}
+    </span>
+
+    </div>
+
+
+    <!-- Agent Goal -->
+    <div class="trace-goal">
+
+      <span>Agent Goal</span>
+
+      <strong>
+        {{ agentResult.goal }}
+      </strong>
+
+    </div>
+
+
+    <!-- Decision Flow -->
+    <div class="trace-flow">
+
+      <!-- Step 1 -->
+      <div class="trace-step">
+
+        <div class="trace-number">
+          1
+        </div>
+
+        <div>
+
+          <strong>
+            Opportunity Detection
+          </strong>
+
+          <p>
+            {{ agentResult.opportunitiesFound }}
+            growth opportunity found
+          </p>
+
+          <small>
+            {{ agentResult.opportunityType }}
+            ·
+            {{ agentResult.opportunitySeverity }}
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <div class="trace-arrow">
+        ↓
+      </div>
+
+
+      <!-- Step 2 -->
+      <div class="trace-step">
+
+        <div class="trace-number">
+          2
+        </div>
+
+        <div>
+
+          <strong>
+            Recommendation Selection
+          </strong>
+
+          <p>
+            {{ agentResult.recommendation }}
+          </p>
+
+          <small>
+            Recommendation #{{ agentResult.recommendationId }}
+            ·
+            {{ agentResult.recommendationStatus }}
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <div class="trace-arrow">
+        ↓
+      </div>
+
+
+      <!-- Step 3 -->
+      <div class="trace-step">
+
+        <div class="trace-number">
+          3
+        </div>
+
+        <div>
+
+          <strong>
+            Policy Guardrail
+          </strong>
+
+          <p>
+            {{ agentResult.guardrailReason }}
+          </p>
+
+          <small>
+            Decision:
+            {{ agentResult.guardrailDecision }}
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <div class="trace-arrow">
+        ↓
+      </div>
+
+
+      <!-- Step 4 -->
+      <div class="trace-step">
+
+        <div class="trace-number">
+          4
+        </div>
+
+        <div>
+
+          <strong>
+            Action Execution
+          </strong>
+
+          <p>
+            {{ agentResult.actionType }}
+          </p>
+
+          <small>
+            Execution:
+            {{ agentResult.executionStatus }}
+          </small>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Final Result -->
+    <div class="trace-result">
+
+      <strong>
+        Agent Result
+      </strong>
+
+      <span>
+      {{ agentResult.message }}
+    </span>
+
+    </div>
+
+  </section>
+
+
+</div>
