@@ -72,7 +72,8 @@ Action Execution
                  ↓
 
 Impact Measurement
-```text
+```
+
 
 ### 🏗️ Architecture
 
