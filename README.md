@@ -72,3 +72,81 @@ Action Execution
                  ↓
 
 Impact Measurement
+
+### 🏗️ Architecture
+
+┌──────────────────────────────────────────────┐
+│              Angular Dashboard               │
+│                                              │
+│  Opportunities | Recommendations | Actions   │
+│  Approval | Impact | Agent Decision Trace    │
+└──────────────────────┬───────────────────────┘
+                       │ REST API
+                       ▼
+┌──────────────────────────────────────────────┐
+│              Spring Boot Backend              │
+│                                              │
+│  ┌────────────────────────────────────────┐  │
+│  │        Merchant Growth Agent           │  │
+│  │                                        │  │
+│  │ Opportunity → Recommendation           │  │
+│  │ → Guardrail → Action → Impact          │  │
+│  └────────────────────────────────────────┘  │
+│                                              │
+│  Analytics | Approval | Guardrails | Actions │
+│  Impact Measurement | Audit Data             │
+└──────────────────────┬───────────────────────┘
+                       │
+                       ▼
+              ┌─────────────────┐
+              │      MySQL      │
+              │                 │
+              │ Merchant Data   │
+              │ Opportunities   │
+              │ Recommendations │
+              │ Guardrails      │
+              │ Executions      │
+              │ Impact          │
+              └─────────────────┘
+
+### 🤖 Agentic Workflow
+
+                    Merchant Activity
+                           │
+                           ▼
+                 ┌───────────────────┐
+                 │ Opportunity Tool  │
+                 │ Detect business   │
+                 │ growth problems   │
+                 └─────────┬─────────┘
+                           │
+                           ▼
+                 ┌───────────────────┐
+                 │ Recommendation    │
+                 │ Tool              │
+                 │ Select next best  │
+                 │ action            │
+                 └─────────┬─────────┘
+                           │
+                           ▼
+                    Human Approval
+                           │
+                    ┌──────┴──────┐
+                    │             │
+                 REJECTED       APPROVED
+                    │             │
+                    ▼             ▼
+                  STOP      Guardrail Tool
+                                  │
+                           ┌──────┴──────┐
+                           │             │
+                        BLOCKED       ALLOWED
+                           │             │
+                           ▼             ▼
+                          STOP     Action Tool
+                                       │
+                                       ▼
+                                Impact Measurement
+                                       │
+                                       ▼
+                                Business Feedback
