@@ -82,7 +82,9 @@ mvn spring-boot:run
 ### Frontend
 
 cd frontend
+
 npm install
+
 ng serve
 
 Backend: http://localhost:8080
@@ -96,6 +98,7 @@ MVP completed.
 # Future Scope
 
 More growth opportunity types
+
 Additional action adapters
 Real merchant integrations
 Production-grade impact measurement
