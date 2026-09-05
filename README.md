@@ -43,17 +43,29 @@ Detect → Recommend → Approve → Guardrail → Execute → Measure
 ## Agent Workflow
 
 Merchant Data
+
 ↓
+
 Opportunity Detection
+
 ↓
+
 Recommendation
+
 ↓
+
 Human Approval
+
 ↓
+
 Guardrail Validation
+
 ↓
+
 Action Execution
+
 ↓
+
 Impact Measurement
 
 ## Current MVP
@@ -65,12 +77,10 @@ optimization using a controlled sandbox execution flow.
 
 ### Backend
 
-```bash
 mvn spring-boot:run
 
 ### Frontend
 
-```bash
 cd frontend
 npm install
 ng serve
@@ -83,7 +93,8 @@ Project Status
 
 MVP completed.
 
-Future Scope
+# Future Scope
+
 More growth opportunity types
 Additional action adapters
 Real merchant integrations
