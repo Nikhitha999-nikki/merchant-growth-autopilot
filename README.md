@@ -76,7 +76,7 @@ Impact Measurement
 
 
 ### 🏗️ Architecture
-
+...text
 ┌──────────────────────────────────────────────┐
 │              Angular Dashboard               │
 │                                              │
@@ -110,6 +110,7 @@ Impact Measurement
               │ Executions      │
               │ Impact          │
               └─────────────────┘
+...
 
 ### 🤖 Agentic Workflow
 
