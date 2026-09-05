@@ -1,104 +1,74 @@
 # Merchant Growth Autopilot
 
-AI-powered merchant growth operations platform.
+> An agentic merchant operations platform that detects growth opportunities, recommends actions, validates them through policy guardrails, executes approved actions, and measures business impact.
 
-## Problem
+## 🚀 Overview
 
-Merchants often have transaction and customer activity data,
-but identifying revenue leaks and deciding what action to take
-requires continuous manual analysis.
+Merchants generate large amounts of transaction and customer activity data, but identifying **where revenue is being lost, why it is happening, and what action should be taken next** often requires continuous manual analysis.
 
-## Solution
+**Merchant Growth Autopilot** addresses this problem with a controlled AI-agent workflow.
 
-Merchant Growth Autopilot uses an agentic workflow to:
+Instead of simply showing analytics, the system moves from:
 
-Detect → Recommend → Approve → Guardrail → Execute → Measure
+**Detect → Explain → Recommend → Approve → Validate → Execute → Measure**
 
-## Key Features
+The goal is to turn merchant data into **actionable and controlled growth operations**.
 
-- AI-driven growth opportunity detection
-- Automated recommendation generation
-- Human approval workflow
-- Policy guardrails before execution
-- Action execution layer
-- Business impact measurement
-- Agent decision trace
-- Merchant dashboard
+---
 
-## Architecture
+## 🎯 Problem
 
-[architecture diagram]
+A merchant may know that thousands of customers are visiting their store, but still struggle to answer:
 
-## Tech Stack
+- Where are customers dropping out?
+- Which business problem deserves attention first?
+- What action should be taken?
+- Is the action safe to execute?
+- Should the merchant approve it before execution?
+- Did the action create measurable business value?
 
-- Java 17
-- Spring Boot
-- Spring Data JPA
-- MySQL
-- Angular
-- Bootstrap
-- REST APIs
-- Git
+Traditional dashboards primarily provide information.
 
-## Agent Workflow
+**Merchant Growth Autopilot goes one step further by connecting insights to controlled actions.**
 
-Merchant Data
+---
 
-↓
+## 💡 Solution
 
-Opportunity Detection
+The platform continuously analyzes merchant activity to identify business opportunities.
 
-↓
+For the current MVP, the system detects a **mobile payment conversion gap** by comparing mobile and desktop checkout performance.
 
-Recommendation
+Example:
 
-↓
+```text
+Desktop Payment Conversion: 75%
+Mobile Payment Conversion: 16.67%
 
-Human Approval
+                 ↓
 
-↓
+Growth Opportunity Detected
 
-Guardrail Validation
+"Mobile payment conversion is low"
 
-↓
+                 ↓
+
+AI Recommendation
+
+"Improve mobile checkout experience"
+
+                 ↓
+
+Merchant Approval
+
+                 ↓
+
+Policy Guardrail
+
+                 ↓
 
 Action Execution
 
-↓
+                 ↓
 
 Impact Measurement
-
-## Current MVP
-
-The prototype demonstrates mobile payment conversion
-optimization using a controlled sandbox execution flow.
-
-## Running Locally
-
-### Backend
-
-mvn spring-boot:run
-
-### Frontend
-
-cd frontend
-
-npm install
-
-ng serve
-
-Backend: http://localhost:8080
-
-Frontend: http://localhost:4200
-
-Project Status
-
-MVP completed.
-
-# Future Scope
-
-More growth opportunity types
-
-Additional action adapters
-Real merchant integrations
-Production-grade impact measurement
