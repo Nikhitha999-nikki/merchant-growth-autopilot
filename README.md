@@ -75,42 +75,7 @@ Impact Measurement
 ```
 
 
-### 🏗️ Architecture
-...text
-┌──────────────────────────────────────────────┐
-│              Angular Dashboard               │
-│                                              │
-│  Opportunities | Recommendations | Actions   │
-│  Approval | Impact | Agent Decision Trace    │
-└──────────────────────┬───────────────────────┘
-                       │ REST API
-                       ▼
-┌──────────────────────────────────────────────┐
-│              Spring Boot Backend              │
-│                                              │
-│  ┌────────────────────────────────────────┐  │
-│  │        Merchant Growth Agent           │  │
-│  │                                        │  │
-│  │ Opportunity → Recommendation           │  │
-│  │ → Guardrail → Action → Impact          │  │
-│  └────────────────────────────────────────┘  │
-│                                              │
-│  Analytics | Approval | Guardrails | Actions │
-│  Impact Measurement | Audit Data             │
-└──────────────────────┬───────────────────────┘
-                       │
-                       ▼
-              ┌─────────────────┐
-              │      MySQL      │
-              │                 │
-              │ Merchant Data   │
-              │ Opportunities   │
-              │ Recommendations │
-              │ Guardrails      │
-              │ Executions      │
-              │ Impact          │
-              └─────────────────┘
-...
+
 
 ### 🤖 Agentic Workflow
 
